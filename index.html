@@ -1,0 +1,953 @@
+
+<!doctype html>
+
+
+<html lang="en">
+
+  
+<head>
+
+    
+<meta charset="UTF-8" />
+
+    
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    
+<title>
+GuildWort — Word Game Tournaments
+</title>
+
+    
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+
+    
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap" rel="stylesheet" />
+
+    
+<link rel="stylesheet" href="styles.css" />
+
+  
+</head>
+
+  
+<body>
+
+    
+<div class="app-shell">
+
+      
+<aside class="sidebar">
+
+        
+<a class="brand" href="#">
+
+<span class="brand-mark">
+W
+</span>
+
+<span>
+GuildWort
+</span>
+
+</a>
+
+        
+<nav class="nav" aria-label="Main navigation">
+
+          
+<button class="nav-item active" data-view="home">
+
+<span>
+⌂
+</span>
+ Home
+</button>
+
+          
+<button class="nav-item" data-view="play">
+
+<span>
+◈
+</span>
+ Play Wordle
+</button>
+
+          
+<button class="nav-item" data-view="builder">
+
+<span>
+✦
+</span>
+ Game studio
+</button>
+
+          
+<button class="nav-item" data-view="players">
+
+<span>
+♙
+</span>
+ Players
+</button>
+
+        
+</nav>
+
+        
+<div class="sidebar-footer">
+
+<div class="user-avatar">
+AK
+</div>
+
+<div>
+
+<strong>
+Anvita K.
+</strong>
+
+<small>
+Wordsmith
+</small>
+
+</div>
+
+<button class="more">
+•••
+</button>
+
+</div>
+
+      
+</aside>
+
+
+      
+<main>
+
+        
+<header class="topbar">
+
+<div>
+
+<p class="eyebrow">
+WORD GAME SOCIETY
+</p>
+
+<h1 id="page-title">
+Good evening, Anvita.
+</h1>
+
+</div>
+
+<div class="top-actions">
+
+<button class="icon-button" aria-label="Notifications">
+♧
+<i>
+
+</i>
+
+</button>
+
+<button class="create-button" data-view="builder">
++ Create a game
+</button>
+
+</div>
+
+</header>
+
+
+        
+<section id="home-view" class="view active">
+
+          
+<div class="hero-card">
+
+<div class="hero-copy">
+
+<span class="live-pill">
+
+<b>
+
+</b>
+ LIVE TOURNAMENT
+</span>
+
+<h2>
+The Daily
+<br />
+
+<em>
+Letter League
+</em>
+
+</h2>
+
+<p>
+One word. Five tries. A fresh bracket every day.
+</p>
+
+<button class="primary-button" data-view="play">
+Join today’s round 
+<span>
+→
+</span>
+
+</button>
+
+</div>
+
+<div class="hero-tiles" aria-label="Decorative word tiles">
+
+<span class="tile green">
+W
+</span>
+
+<span class="tile gold">
+O
+</span>
+
+<span class="tile ghost">
+R
+</span>
+
+<span class="tile green">
+D
+</span>
+
+<span class="tile ghost">
+S
+</span>
+
+</div>
+
+<div class="hero-stats">
+
+<div>
+
+<strong>
+128
+</strong>
+
+<span>
+players today
+</span>
+
+</div>
+
+<div>
+
+<strong>
+8:42
+</strong>
+
+<span>
+round ends in
+</span>
+
+</div>
+
+</div>
+
+</div>
+
+          
+<div class="section-heading">
+
+<div>
+
+<p class="eyebrow">
+YOUR GAMES
+</p>
+
+<h2>
+Pick up where you left off
+</h2>
+
+</div>
+
+<button class="text-button" data-view="play">
+View all 
+<span>
+→
+</span>
+
+</button>
+
+</div>
+
+          
+<div class="game-grid">
+
+            
+<article class="game-card featured">
+
+<div class="card-top">
+
+<span class="mini-logo">
+W
+</span>
+
+<span class="status">
+IN PROGRESS
+</span>
+
+</div>
+
+<h3>
+Daily Wordle
+</h3>
+
+<p>
+Today’s puzzle · 5 letters
+</p>
+
+<div class="progress-row">
+
+<div class="progress">
+
+<i style="width: 60%">
+
+</i>
+
+</div>
+
+<span>
+3 / 5
+</span>
+
+</div>
+
+<button class="card-action" data-view="play">
+Continue 
+<span>
+→
+</span>
+
+</button>
+
+</article>
+
+            
+<article class="game-card">
+
+<div class="card-top">
+
+<span class="mini-logo purple">
+A
+</span>
+
+<span class="status muted">
+FRIENDS
+</span>
+
+</div>
+
+<h3>
+After Hours
+</h3>
+
+<p>
+Created by Mihir · 6 letters
+</p>
+
+<div class="avatars">
+
+<span>
+MK
+</span>
+
+<span>
+J
+</span>
+
+<span>
++
+</span>
+
+</div>
+
+<button class="card-action" data-view="play">
+Play round 
+<span>
+→
+</span>
+
+</button>
+
+</article>
+
+            
+<button class="new-game-card" data-view="builder">
+
+<span>
++
+</span>
+
+<strong>
+Make your own
+</strong>
+
+<small>
+Turn a word into a game
+</small>
+
+</button>
+
+          
+</div>
+
+          
+<div class="lower-grid">
+
+<section class="panel leaderboard">
+
+<div class="panel-head">
+
+<div>
+
+<p class="eyebrow">
+LEADERBOARD
+</p>
+
+<h2>
+Today’s sharpest minds
+</h2>
+
+</div>
+
+<button class="text-button">
+Full board →
+</button>
+
+</div>
+
+<ol>
+
+<li>
+
+<b>
+1
+</b>
+
+<span class="rank-avatar coral">
+M
+</span>
+
+<strong>
+Maya Chen
+</strong>
+
+<em>
+1,240
+</em>
+
+</li>
+
+<li>
+
+<b>
+2
+</b>
+
+<span class="rank-avatar blue">
+R
+</span>
+
+<strong>
+Rohan Das
+</strong>
+
+<em>
+1,180
+</em>
+
+</li>
+
+<li class="you">
+
+<b>
+3
+</b>
+
+<span class="rank-avatar gold">
+A
+</span>
+
+<strong>
+You
+</strong>
+
+<em>
+1,110
+</em>
+
+</li>
+
+</ol>
+
+</section>
+
+<section class="panel activity">
+
+<p class="eyebrow">
+AROUND THE GUILD
+</p>
+
+<h2>
+Fresh from the board
+</h2>
+
+<div class="activity-item">
+
+<span class="activity-avatar">
+J
+</span>
+
+<p>
+
+<b>
+Jules
+</b>
+ set a new streak
+<br />
+
+<small>
+12 games in a row
+</small>
+
+</p>
+
+<time>
+8m
+</time>
+
+</div>
+
+<div class="activity-item">
+
+<span class="activity-avatar teal">
+S
+</span>
+
+<p>
+
+<b>
+Sana
+</b>
+ created 
+<i>
+Plant Panic
+</i>
+
+<br />
+
+<small>
+18 players joined
+</small>
+
+</p>
+
+<time>
+21m
+</time>
+
+</div>
+
+</section>
+
+</div>
+
+        
+</section>
+
+
+        
+<section id="play-view" class="view">
+
+          
+<div class="play-layout">
+
+<div class="wordle-stage">
+
+<div class="game-header">
+
+<button class="back-link" data-view="home">
+← Lobby
+</button>
+
+<span class="round-label">
+ROUND 1 OF 3
+</span>
+
+<button class="help-button" id="rules-button">
+?
+</button>
+
+</div>
+
+<h2>
+Daily Wordle
+</h2>
+
+<p class="game-subtitle">
+Find the hidden five-letter word.
+</p>
+
+<div id="board" class="board" aria-label="Wordle board">
+
+</div>
+
+<div id="message" class="message" role="status">
+
+</div>
+
+<div id="keyboard" class="keyboard" aria-label="On-screen keyboard">
+
+</div>
+
+</div>
+
+<aside class="round-card">
+
+<p class="eyebrow">
+TOURNAMENT
+</p>
+
+<h3>
+Letter League
+</h3>
+
+<div class="round-score">
+
+<strong id="score">
+0
+</strong>
+
+<span>
+points
+</span>
+
+</div>
+
+<div class="round-detail">
+
+<span>
+Streak
+</span>
+
+<b id="streak">
+0 🔥
+</b>
+
+</div>
+
+<div class="round-detail">
+
+<span>
+Players online
+</span>
+
+<b>
+128
+</b>
+
+</div>
+
+<hr>
+
+<p>
+Fast solves earn more points. Every guess counts.
+</p>
+
+</aside>
+
+</div>
+
+        
+</section>
+
+
+        
+<section id="builder-view" class="view">
+
+<div class="builder-intro">
+
+<p class="eyebrow">
+GAME STUDIO
+</p>
+
+<h2>
+Make a word worth finding.
+</h2>
+
+<p>
+Build a Wordle round for your friends or open it to the Guild.
+</p>
+
+</div>
+
+<div class="builder-layout">
+
+<form id="creator-form" class="creator-card">
+
+<label>
+Game title
+<input id="game-title" maxlength="36" placeholder="e.g. Saturday brain teaser" required>
+
+</label>
+
+<label>
+Secret word
+<input id="secret-word" minlength="5" maxlength="5" pattern="[A-Za-z]{5}" placeholder="Enter a five-letter word" required>
+
+<small>
+Letters only. The word stays hidden from players.
+</small>
+
+</label>
+
+<label>
+Round note 
+<textarea id="game-note" maxlength="120" placeholder="A small hint, a theme, or a welcome message.">
+
+</textarea>
+
+</label>
+
+<label class="toggle-row">
+
+<input id="public-game" type="checkbox" checked>
+
+<span class="toggle">
+
+</span>
+
+<span>
+
+<b>
+Publish to the Guild
+</b>
+
+<small>
+Anyone can join your round.
+</small>
+
+</span>
+
+</label>
+
+<button class="primary-button" type="submit">
+Publish game 
+<span>
+→
+</span>
+
+</button>
+
+</form>
+
+<div class="preview">
+
+<p class="eyebrow">
+LIVE PREVIEW
+</p>
+
+<div class="preview-card">
+
+<span class="mini-logo">
+W
+</span>
+
+<h3 id="preview-title">
+Your new game
+</h3>
+
+<p id="preview-note">
+A Wordle round by Anvita K.
+</p>
+
+<div class="preview-tiles">
+
+<i>
+A
+</i>
+
+<i>
+R
+</i>
+
+<i>
+T
+</i>
+
+<i>
+S
+</i>
+
+<i>
+Y
+</i>
+
+</div>
+
+<div>
+
+<span class="status">
+WORDLE
+</span>
+
+<span class="preview-meta">
+5 guesses
+</span>
+
+</div>
+
+</div>
+
+<p class="creator-note">
+Your game will appear in the lobby immediately. You can make more rounds anytime.
+</p>
+
+</div>
+
+</div>
+
+<section id="published-games" class="published">
+
+<p class="eyebrow">
+YOUR CREATIONS
+</p>
+
+<div id="published-list">
+
+<p class="empty-state">
+No custom games yet. Your first one is waiting.
+</p>
+
+</div>
+
+</section>
+
+</section>
+
+
+        
+<section id="players-view" class="view">
+
+<p class="eyebrow">
+THE GUILD
+</p>
+
+<h2 class="players-title">
+Players make the game.
+</h2>
+
+<div class="player-stat-grid">
+
+<div>
+
+<strong>
+2,814
+</strong>
+
+<span>
+wordsmiths
+</span>
+
+</div>
+
+<div>
+
+<strong>
+48
+</strong>
+
+<span>
+games today
+</span>
+
+</div>
+
+<div>
+
+<strong>
+19
+</strong>
+
+<span>
+countries
+</span>
+
+</div>
+
+</div>
+
+<div class="panel players-panel">
+
+<h2>
+Top wordsmiths this week
+</h2>
+
+<p>
+Compete in daily rounds to move up the board.
+</p>
+
+<button class="primary-button" data-view="play">
+Play today’s Wordle 
+<span>
+→
+</span>
+
+</button>
+
+</div>
+
+</section>
+
+      
+</main>
+
+    
+</div>
+
+    
+<div id="modal" class="modal" hidden>
+
+<div class="modal-box">
+
+<button id="close-modal">
+×
+</button>
+
+<h2>
+How to play
+</h2>
+
+<p>
+Guess the five-letter word in six attempts. Green letters are in the right place; gold letters are in the word but need moving.
+</p>
+
+</div>
+
+</div>
+
+    
+<script src="app.js">
+
+</script>
+
+  
+</body>
+
+
+</html>
+
+
+
