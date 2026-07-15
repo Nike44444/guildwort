@@ -1,4 +1,15 @@
-const DAILY_GAME = { id: 'daily', title: 'Daily Wordle', word: 'PLANT', note: 'Today’s five-letter challenge.' };
+const DAILY_WORDS = window.GUILDWORT_WORDS || ['PLANT'];
+function dailyDateKey() {
+  return new Intl.DateTimeFormat('en-CA', {
+    timeZone: 'Asia/Kolkata', year: 'numeric', month: '2-digit', day: '2-digit'
+  }).format(new Date());
+}
+function getDailyGame() {
+  const key = dailyDateKey();
+  const index = [...key].reduce((hash, character) => ((hash * 31) + character.charCodeAt(0)) >>> 0, 7) % DAILY_WORDS.length;
+  return { id: `daily-${key}`, title: 'Daily Wordle', word: DAILY_WORDS[index], note: `A fresh word for ${key}.` };
+}
+const DAILY_GAME = getDailyGame();
 const STORAGE_KEY = 'guildwort-games-v1';
 const STATS_KEY = 'guildwort-stats-v1';
 const board = document.querySelector('#board');
