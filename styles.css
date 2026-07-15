@@ -1,0 +1,199 @@
+:root{--ink:#232724;--muted:#69706b;--paper:#f7f4ed;--card:#fffdf9;--line:#e4e0d6;--green:#2e725d;--green-dark:#205746;--gold:#d9a53c;--lav:#e9e4ff;--shadow:0 15px 35px rgba(36,44,38,.07)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:"DM Sans",sans-serif}
+.app-shell{display:flex;min-height:100vh}
+.sidebar{width:242px;border-right:1px solid var(--line);padding:29px 18px;display:flex;flex-direction:column;background:#fbf9f4}
+.brand{display:flex;align-items:center;gap:10px;color:var(--ink);font-size:21px;font-family:Fraunces,serif;font-weight:700;text-decoration:none;padding:0 11px}
+.brand-mark,.mini-logo{display:inline-grid;place-items:center;border-radius:8px;background:var(--green);color:#fff;font-family:Fraunces,serif;font-weight:700}
+.brand-mark{width:28px;height:28px;font-size:17px}
+.nav{margin-top:52px;display:grid;gap:6px}
+.nav-item{border:0;background:transparent;text-align:left;color:#68706a;border-radius:9px;padding:11px 12px;font:500 14px "DM Sans";cursor:pointer}
+.nav-item span{font-size:18px;width:29px;display:inline-block}
+.nav-item:hover,.nav-item.active{background:#e8efe9;color:var(--green-dark)}
+.sidebar-footer{margin-top:auto;padding:15px 10px 0;display:flex;align-items:center;gap:9px;border-top:1px solid var(--line);font-size:12px}
+.sidebar-footer small{display:block;color:var(--muted);margin-top:3px}
+.user-avatar,.rank-avatar,.activity-avatar{display:grid;place-items:center;border-radius:50%;background:#e4b947;color:#563e0d;font-size:11px;font-weight:700;width:31px;height:31px}
+.more{margin-left:auto;border:0;background:transparent;color:var(--muted);font-weight:bold;cursor:pointer}
+main{width:calc(100% - 242px);max-width:1440px;margin:0 auto;padding:36px 5.4% 58px}
+.topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:30px}
+.eyebrow{font:500 10px "DM Mono",monospace;color:#777b74;letter-spacing:1.3px;margin:0 0 7px}
+h1,h2,h3,p{margin-top:0}
+h1{font:600 31px Fraunces,serif;letter-spacing:-.8px;margin-bottom:0}
+h2{font:600 25px Fraunces,serif;letter-spacing:-.5px;margin-bottom:0}
+.top-actions{display:flex;align-items:center;gap:14px}
+.icon-button{border:1px solid var(--line);background:var(--card);border-radius:8px;width:40px;height:40px;position:relative;font-size:19px}
+.icon-button i{width:6px;height:6px;background:#df6358;position:absolute;border-radius:50%;right:9px;top:9px}
+.create-button,.primary-button{border:0;border-radius:8px;background:var(--green);color:#fff;font:600 13px "DM Sans";padding:12px 17px;cursor:pointer}
+.primary-button{padding:13px 17px}
+.primary-button span{font-size:18px;line-height:0;margin-left:11px}
+.hero-card{background:#dceadf;min-height:300px;border-radius:15px;padding:37px 45px;position:relative;overflow:hidden}
+.hero-copy{position:relative;z-index:1}
+.live-pill{color:var(--green-dark);font:500 10px "DM Mono";letter-spacing:1.1px}
+.live-pill b{display:inline-block;width:6px;height:6px;background:#d15e4e;border-radius:50%;margin-right:7px}
+.hero-card h2{font-size:39px;line-height:1.04;margin:17px 0 11px}
+.hero-card h2 em{color:var(--green);font-style:normal}
+.hero-card p{font-size:14px;color:#4b6655;margin-bottom:22px}
+.hero-tiles{position:absolute;right:8%;top:74px;display:flex;gap:8px;transform:rotate(-6deg)}
+.tile{width:61px;height:61px;border-radius:9px;display:grid;place-items:center;background:#f8f7f1;border:1px solid #dedbd1;color:#59635c;font:700 25px Fraunces}
+.tile.green{background:#3c8069;color:#fff;border-color:#3c8069}
+.tile.gold{background:#d7a538;color:#fff;border-color:#d7a538}
+.hero-stats{position:absolute;right:43px;bottom:30px;display:flex;gap:38px}
+.hero-stats div{display:grid}
+.hero-stats strong{font:600 20px Fraunces}
+.hero-stats span{font-size:11px;color:#5b6b60;margin-top:3px}
+.section-heading,.panel-head{display:flex;justify-content:space-between;align-items:end;margin:36px 0 16px}
+.section-heading h2,.panel-head h2{font-size:21px}
+.text-button{background:none;border:0;color:var(--green);font:600 12px "DM Sans";cursor:pointer}
+.game-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.game-card,.new-game-card{min-height:202px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:21px;box-shadow:0 2px 8px rgba(0,0,0,.015);text-align:left}
+.game-card.featured{border-top:3px solid var(--green)}
+.card-top{display:flex;justify-content:space-between;align-items:center}
+.mini-logo{width:30px;height:30px;font-size:18px}
+.mini-logo.purple{background:#7a6eb6}
+.status{font:500 9px "DM Mono";letter-spacing:.7px;color:var(--green);background:#e4f0e8;padding:5px 7px;border-radius:4px}
+.status.muted{color:#7663aa;background:#eeebfa}
+.game-card h3{font:600 18px Fraunces;margin:20px 0 5px}
+.game-card p{font-size:12px;color:var(--muted)}
+.progress-row{display:flex;align-items:center;gap:8px;font-size:10px;color:#737872;margin-top:23px}
+.progress{height:5px;border-radius:4px;background:#e8e8e1;flex:1}
+.progress i{display:block;background:var(--green);height:100%;border-radius:4px}
+.card-action{padding:0;border:0;background:none;color:var(--green);font:600 12px "DM Sans";margin-top:17px;cursor:pointer}
+.avatars{display:flex;margin-top:22px}
+.avatars span{width:23px;height:23px;display:grid;place-items:center;background:#e6ddd0;border:2px solid white;border-radius:50%;font-size:9px;margin-left:-5px}
+.avatars span:first-child{margin-left:0;background:#e8bac4}
+.new-game-card{border:1.5px dashed #c8c7bd;display:flex;align-items:center;justify-content:center;flex-direction:column;cursor:pointer;background:transparent}
+.new-game-card span{color:var(--green);font-size:27px}
+.new-game-card strong{font:600 15px Fraunces;margin:9px}
+.new-game-card small{color:var(--muted);font-size:11px}
+.lower-grid{display:grid;grid-template-columns:1.25fr .75fr;gap:16px;margin-top:35px}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:23px}
+.panel-head{margin:0 0 15px}
+.leaderboard ol{padding:0;margin:0;list-style:none}
+.leaderboard li{display:grid;grid-template-columns:24px 33px 1fr auto;align-items:center;padding:11px 3px;border-top:1px solid #efede7;font-size:13px}
+.leaderboard li>b{font-family:"DM Mono";font-size:11px;color:var(--muted)}
+.rank-avatar{width:25px;height:25px}
+.rank-avatar.coral{background:#f0c4b5}
+.rank-avatar.blue{background:#c8d9e8;color:#31576c}
+.rank-avatar.gold{background:#eadf99}
+.leaderboard li em{font-style:normal;color:var(--green);font:500 12px "DM Mono"}
+.leaderboard .you strong{color:var(--green)}
+.activity h2{font-size:19px;margin-bottom:16px}
+.activity-item{display:flex;align-items:center;gap:9px;margin:13px 0}
+.activity-avatar{background:#d8c4ec;color:#604676}
+.activity-avatar.teal{background:#bee1df;color:#296b68}
+.activity-item p{font-size:12px;line-height:1.45;margin:0}
+.activity-item small{color:var(--muted)}
+.activity-item time{margin-left:auto;font:10px "DM Mono";color:#91948e}
+.view{display:none}
+.view.active{display:block}
+.play-layout{display:grid;grid-template-columns:1fr 230px;gap:42px;max-width:830px;margin:0 auto}
+.wordle-stage{text-align:center}
+.game-header{display:flex;justify-content:space-between;align-items:center}
+.back-link,.help-button{border:0;background:none;color:var(--green);font:600 12px "DM Sans";cursor:pointer}
+.help-button{font-size:16px;border:1px solid var(--line);width:27px;height:27px;border-radius:50%}
+.round-label{font:10px "DM Mono";letter-spacing:1px;color:var(--muted)}
+.wordle-stage h2{margin:19px 0 5px;font-size:29px}
+.game-subtitle{font-size:13px;color:var(--muted)}
+.board{display:grid;grid-template-columns:repeat(5,58px);gap:7px;justify-content:center;margin:26px auto 13px}
+.cell{height:58px;border:2px solid #d8d5cd;border-radius:5px;display:grid;place-items:center;font:600 27px "DM Sans";text-transform:uppercase}
+.cell.filled{border-color:#a8aca5}
+.cell.correct{background:#408467;border-color:#408467;color:white}
+.cell.present{background:#cda13c;border-color:#cda13c;color:white}
+.cell.absent{background:#7b817d;border-color:#7b817d;color:white}
+.message{height:20px;font-size:12px;color:#b64d44;font-weight:600}
+.keyboard{max-width:500px;margin:8px auto;display:grid;gap:6px}
+.key-row{display:flex;justify-content:center;gap:5px}
+.key{border:0;background:#dbdcd6;border-radius:4px;min-width:34px;height:43px;font:600 12px "DM Sans";cursor:pointer}
+.key.wide{padding:0 12px;font-size:10px}
+.key.correct{background:#408467;color:#fff}
+.key.present{background:#cda13c;color:#fff}
+.key.absent{background:#858a85;color:#fff}
+.round-card{background:#e5efe7;border-radius:11px;align-self:start;padding:23px}
+.round-card h3{font:600 20px Fraunces;margin:0}
+.round-score{padding:22px 0 17px;border-bottom:1px solid #c6dbc9}
+.round-score strong{font:600 36px Fraunces;display:block}
+.round-score span,.round-detail span,.round-card p{font-size:11px;color:#55705f}
+.round-detail{display:flex;justify-content:space-between;margin-top:14px;font-size:12px}
+.round-card hr{border:0;border-top:1px solid #c6dbc9;margin:19px 0}
+.round-card p{line-height:1.5}
+.builder-intro{margin-bottom:28px}
+.builder-intro h2,.players-title{font-size:32px;margin-bottom:9px}
+.builder-intro>p:last-child{color:var(--muted);font-size:14px}
+.builder-layout{display:grid;grid-template-columns:minmax(360px,1fr) .85fr;gap:35px;max-width:850px}
+.creator-card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:27px;display:grid;gap:20px}
+.creator-card label{font-size:13px;font-weight:600;display:grid;gap:8px}
+.creator-card input[type=text],.creator-card input:not([type]),.creator-card input[type="text"],.creator-card input#game-title,.creator-card input#secret-word,.creator-card textarea{border:1px solid #d8d5cd;border-radius:6px;padding:11px 12px;font:13px "DM Sans";background:#fff}
+.creator-card textarea{height:74px;resize:vertical}
+.creator-card small{font-size:11px;color:var(--muted);font-weight:400}
+.toggle-row{grid-template-columns:42px 1fr;align-items:center}
+.toggle-row input{opacity:0;position:absolute}
+.toggle{width:37px;height:21px;border-radius:15px;background:var(--green);position:relative}
+.toggle:after{content:"";width:17px;height:17px;top:2px;right:2px;position:absolute;border-radius:50%;background:#fff}
+.toggle-row input:not(:checked)+.toggle{background:#bec2bd}
+.toggle-row input:not(:checked)+.toggle:after{right:18px}
+.toggle-row span:last-child{display:grid;gap:2px}
+.preview{padding:17px 0}
+.preview-card{background:#efe9d6;border-radius:13px;padding:27px;min-height:260px}
+.preview-card h3{font:600 24px Fraunces;margin:19px 0 6px}
+.preview-card p{font-size:12px;color:#66655c}
+.preview-tiles{display:flex;gap:5px;margin:24px 0}
+.preview-tiles i{width:35px;height:35px;display:grid;place-items:center;border-radius:5px;background:#fffaf0;border:1px solid #ddd4bd;font:600 15px "DM Sans";font-style:normal}
+.preview-meta{font-size:10px;color:#7e796d;margin-left:9px}
+.creator-note{font-size:11px;color:var(--muted);line-height:1.5;margin-top:14px}
+.published{margin-top:38px;max-width:850px}
+.published>div{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px}
+.empty-state{margin:0;color:var(--muted);font-size:13px}
+.created-game{display:flex;align-items:center;gap:12px}
+.created-game h3{margin:0 0 3px;font:600 15px Fraunces}
+.created-game p{margin:0;color:var(--muted);font-size:11px}
+.created-game .status{margin-left:auto}
+.invite-button{border:1px solid #c8d7cc;border-radius:6px;padding:6px 9px;background:#f4faf4;color:var(--green);font:600 11px "DM Sans";cursor:pointer;margin-left:auto}
+.player-stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;max-width:700px;margin-top:28px}
+.player-stat-grid div{background:#e6efe6;border-radius:10px;padding:25px}
+.player-stat-grid strong{font:600 31px Fraunces;display:block}
+.player-stat-grid span{font-size:11px;color:#59705e}
+.players-panel{margin-top:26px;max-width:700px}
+.players-panel h2{font-size:22px}
+.players-panel p{color:var(--muted);font-size:13px;margin:7px 0 18px}
+.modal{position:fixed;inset:0;background:rgba(34,39,35,.32);display:grid;place-items:center}
+.modal[hidden]{display:none}
+.modal-box{background:#fffdf9;border-radius:12px;padding:27px;max-width:360px;position:relative;box-shadow:var(--shadow)}
+.modal-box h2{font-size:23px}
+.modal-box p{font-size:13px;line-height:1.6;color:var(--muted);margin:10px 0 0}
+.modal-box button{position:absolute;right:12px;top:9px;border:0;background:none;font-size:24px;color:var(--muted);cursor:pointer}
+@media(max-width:850px){.sidebar{width:65px;padding:25px 9px}
+.brand span:last-child,.nav-item{font-size:0}
+.brand{padding:0;justify-content:center}
+.nav-item span{font-size:20px;width:auto}
+.sidebar-footer>div:not(.user-avatar),.more{display:none}
+.sidebar-footer{justify-content:center;padding:14px 0}
+.app-shell main{width:calc(100% - 65px)}
+.game-grid{grid-template-columns:1fr 1fr}
+.new-game-card{min-height:160px}
+.builder-layout{grid-template-columns:1fr}
+.preview{padding:0}
+.play-layout{grid-template-columns:1fr}
+.round-card{display:none}
+}
+@media(max-width:600px){main{padding:25px 18px}
+.topbar{align-items:flex-start}
+.top-actions .icon-button{display:none}
+.create-button{font-size:0;padding:13px}
+.create-button:after{content:"+";font-size:18px}
+.hero-card{padding:30px 25px;min-height:340px}
+.hero-tiles{right:-53px;top:170px}
+.hero-stats{left:25px;right:auto;bottom:21px}
+.game-grid,.lower-grid{grid-template-columns:1fr}
+.game-card,.new-game-card{min-height:170px}
+.activity{display:none}
+.builder-layout{grid-template-columns:1fr}
+.creator-card{padding:20px}
+.board{grid-template-columns:repeat(5,50px)}
+.cell{height:50px}
+.key{min-width:27px;height:40px}
+.play-layout{gap:15px}
+.player-stat-grid{grid-template-columns:1fr}
+.topbar h1{font-size:25px}
+}
+
+
