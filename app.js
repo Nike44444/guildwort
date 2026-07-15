@@ -1,98 +1,243 @@
-let target = 'PLANT';
-let row = 0, col = 0, current = '', finished = false, score = 0, streak = 0;
+const DAILY_GAME = { id: 'daily', title: 'Daily Wordle', word: 'PLANT', note: 'Today’s five-letter challenge.' };
+const STORAGE_KEY = 'guildwort-games-v1';
+const STATS_KEY = 'guildwort-stats-v1';
 const board = document.querySelector('#board');
 const message = document.querySelector('#message');
-const keys = {};
-const rows = ['QWERTYUIOP','ASDFGHJKL','ZXCVBNM'];
+const keyboard = document.querySelector('#keyboard');
+const titleInput = document.querySelector('#game-title');
+const wordInput = document.querySelector('#secret-word');
+const noteInput = document.querySelector('#game-note');
+const gamesList = document.querySelector('#published-list');
+const keyButtons = {};
 
-function makeBoard(){
+let activeGame = DAILY_GAME;
+let row = 0;
+let current = '';
+let finished = false;
+let stats = loadStats();
+
+function loadGames() {
+  try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; } catch { return []; }
+}
+
+function saveGames(games) { localStorage.setItem(STORAGE_KEY, JSON.stringify(games)); }
+
+function loadStats() {
+  try { return JSON.parse(localStorage.getItem(STATS_KEY)) || { score: 0, streak: 0 }; }
+  catch { return { score: 0, streak: 0 }; }
+}
+
+function saveStats() { localStorage.setItem(STATS_KEY, JSON.stringify(stats)); }
+
+function updateStats() {
+  document.querySelector('#score').textContent = stats.score;
+  document.querySelector('#streak').textContent = `${stats.streak} streak`;
+}
+
+function makeBoard() {
   board.innerHTML = '';
-  for(let r=0;r<6;r++) for(let c=0;c<5;c++){
-    const cell=document.createElement('div'); cell.className='cell'; cell.id=`cell-${r}-${c}`; board.append(cell);
+  for (let r = 0; r < 6; r += 1) {
+    for (let c = 0; c < 5; c += 1) {
+      const cell = document.createElement('div');
+      cell.className = 'cell';
+      cell.id = `cell-${r}-${c}`;
+      board.append(cell);
+    }
   }
 }
-function makeKeyboard(){
-  const wrap=document.querySelector('#keyboard'); wrap.innerHTML='';
-  rows.forEach((letters,index)=>{const rowEl=document.createElement('div');rowEl.className='key-row'; if(index===2){rowEl.append(makeKey('ENTER',true));} [...letters].forEach(l=>rowEl.append(makeKey(l))); if(index===2)rowEl.append(makeKey('⌫',true));wrap.append(rowEl);});
+
+function makeKeyboard() {
+  keyboard.innerHTML = '';
+  Object.keys(keyButtons).forEach(key => delete keyButtons[key]);
+  ['QWERTYUIOP', 'ASDFGHJKL', 'ZXCVBNM'].forEach((letters, index) => {
+    const rowElement = document.createElement('div');
+    rowElement.className = 'key-row';
+    if (index === 2) rowElement.append(makeKey('ENTER', true));
+    [...letters].forEach(letter => rowElement.append(makeKey(letter)));
+    if (index === 2) rowElement.append(makeKey('BACKSPACE', true));
+    keyboard.append(rowElement);
+  });
 }
-function makeKey(letter,wide=false){const b=document.createElement('button'); b.className=`key${wide?' wide':''}`; b.textContent=letter; b.onclick=()=>input(letter); if(letter.length===1)keys[letter]=b; return b;}
-function input(letter){
-  if(finished)return;
-  if(letter==='⌫'){current=current.slice(0,-1);col=Math.max(0,col-1);const c=document.querySelector(`#cell-${row}-${col}`);c.textContent='';c.classList.remove('filled');return;}
-  if(letter==='ENTER'){submit();return;}
-  if(col<5){const c=document.querySelector(`#cell-${row}-${col}`);c.textContent=letter;c.classList.add('filled');current+=letter;col++;}
+
+function makeKey(letter, wide = false) {
+  const button = document.createElement('button');
+  button.className = `key${wide ? ' wide' : ''}`;
+  button.textContent = letter === 'BACKSPACE' ? 'DEL' : letter;
+  button.addEventListener('click', () => input(letter));
+  if (letter.length === 1) keyButtons[letter] = button;
+  return button;
 }
-function submit(){
-  if(current.length!==5){say('Enter a five-letter word.');return;}
-  const usage=[...target];const results=[];
-  [...current].forEach((letter,i)=>{if(letter===target[i]){results[i]='correct';usage[i]=null;}});
-  [...current].forEach((letter,i)=>{if(!results[i]){const at=usage.indexOf(letter);results[i]=at>-1?'present':'absent';if(at>-1)usage[at]=null;}});
-  [...current].forEach((letter,i)=>{const cell=document.querySelector(`#cell-${row}-${i}`);cell.classList.add(results[i]);const key=keys[letter];if(key && (!key.classList.contains('correct') || results[i]==='correct')){key.classList.remove('present','absent');key.classList.add(results[i]);}});
-  if(current===target){finished=true;score+=Math.max(120,600-row*80);streak++;document.querySelector('#score').textContent=score;document.querySelector('#streak').textContent=`${streak} 🔥`;say(`Brilliant! ${target} found in ${row+1}.`,'win');return;}
-  row++;col=0;current='';if(row===6){finished=true;say(`The word was ${target}. Come back for the next round.`);}
-}
-function say(text,type=''){message.textContent=text;message.className=`message ${type}`;}
-function startCustomGame(word, title){
-  target = word.toUpperCase();
-  row = 0; col = 0; current = ''; finished = false;
+
+function resetRound() {
+  row = 0;
+  current = '';
+  finished = false;
   makeBoard();
-  Object.values(keys).forEach(key => key.className = 'key');
-  document.querySelector('.wordle-stage h2').textContent = title;
-  document.querySelector('.game-subtitle').textContent = `Find the hidden ${target.length}-letter word.`;
-  say('Your custom round is ready.');
+  makeKeyboard();
+  say('');
+}
+
+function startGame(game) {
+  activeGame = game;
+  document.querySelector('.wordle-stage h2').textContent = game.title;
+  document.querySelector('.game-subtitle').textContent = game.note || 'Find the hidden five-letter word.';
+  resetRound();
   show('play');
 }
-function inviteLink(word, title){
-  const payload = btoa(unescape(encodeURIComponent(JSON.stringify({ word, title }))));
-  return `${window.location.href.split('?')[0]}?game=${encodeURIComponent(payload)}`;
-}
-function copyInvite(link, button){
-  if (!navigator.clipboard) {
-    window.prompt('Copy this invite link:', link);
+
+function input(letter) {
+  if (finished) return;
+  if (letter === 'BACKSPACE') {
+    if (!current) return;
+    current = current.slice(0, -1);
+    const cell = document.querySelector(`#cell-${row}-${current.length}`);
+    cell.textContent = '';
+    cell.classList.remove('filled');
     return;
   }
-  navigator.clipboard.writeText(link).then(() => {
-    button.textContent = 'Copied!';
-    setTimeout(() => button.textContent = 'Copy invite link', 1800);
-  }).catch(() => window.prompt('Copy this invite link:', link));
+  if (letter === 'ENTER') { submit(); return; }
+  if (current.length >= 5) return;
+  current += letter;
+  const cell = document.querySelector(`#cell-${row}-${current.length - 1}`);
+  cell.textContent = letter;
+  cell.classList.add('filled');
 }
-document.addEventListener('keydown',e=>{if(e.key==='Enter')input('ENTER');else if(e.key==='Backspace')input('⌫');else if(/^[a-zA-Z]$/.test(e.key))input(e.key.toUpperCase());});
-document.querySelectorAll('[data-view]').forEach(button=>button.addEventListener('click',()=>show(button.dataset.view)));
-function show(name){document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));document.querySelector(`#${name}-view`).classList.add('active');document.querySelectorAll('.nav-item').forEach(b=>b.classList.toggle('active',b.dataset.view===name));document.querySelector('#page-title').textContent=name==='home'?'Good evening, Anvita.':name==='play'?'Tournament room.':name==='builder'?'Game studio.':'Meet the Guild.';window.scrollTo({top:0,behavior:'smooth'});}
-document.querySelector('#rules-button').onclick=()=>document.querySelector('#modal').hidden=false;
-document.querySelector('#close-modal').onclick=()=>document.querySelector('#modal').hidden=true;
-document.querySelector('#modal').onclick=e=>{if(e.target.id==='modal')e.currentTarget.hidden=true;};
-const titleInput=document.querySelector('#game-title'),wordInput=document.querySelector('#secret-word'),noteInput=document.querySelector('#game-note');
-titleInput.oninput=()=>document.querySelector('#preview-title').textContent=titleInput.value||'Your new game';
-noteInput.oninput=()=>document.querySelector('#preview-note').textContent=noteInput.value||'A Wordle round by Anvita K.';
-wordInput.oninput=()=>{wordInput.value=wordInput.value.replace(/[^a-z]/gi,'').toUpperCase();const slots=document.querySelectorAll('.preview-tiles i');[...wordInput.value.padEnd(5,' ')].slice(0,5).forEach((l,i)=>slots[i].textContent=l||'·');};
-document.querySelector('#creator-form').onsubmit=e=>{e.preventDefault();const title=titleInput.value.trim(),word=wordInput.value.trim();if(word.length<3){wordInput.focus();return;}const item=document.createElement('article');item.className='created-game';item.innerHTML=`<span class="mini-logo">W</span><div><h3></h3><p></p></div><span class="status">PUBLISHED</span>`;item.querySelector('h3').textContent=title;item.querySelector('p').textContent=`Wordle · ${word.length} letters · ${document.querySelector('#public-game').checked?'Guild':'Private'}`;const list=document.querySelector('#published-list');list.innerHTML='';list.append(item);e.target.reset();document.querySelector('#preview-title').textContent='Your new game';document.querySelector('#preview-note').textContent='A Wordle round by Anvita K.';document.querySelectorAll('.preview-tiles i').forEach((el,i)=>el.textContent='ARTSY'[i]);say('');};
-document.addEventListener('submit', event => {
-  if (event.target.id !== 'creator-form') return;
-  const word = wordInput.value.trim().toUpperCase();
-  const title = titleInput.value.trim();
-  if (word.length !== 5) return;
-  setTimeout(() => {
-    const item = document.querySelector('#published-list .created-game');
-    if (!item) return;
-    const playButton = document.createElement('button');
-    playButton.className = 'card-action';
-    playButton.textContent = 'Play this word →';
-    playButton.onclick = () => startCustomGame(word, title);
-    item.append(playButton);
-    const link = inviteLink(word, title);
-    const copyButton = document.createElement('button');
-    copyButton.className = 'invite-button';
-    copyButton.textContent = 'Copy invite link';
-    copyButton.onclick = () => copyInvite(link, copyButton);
-    item.append(copyButton);
+
+function submit() {
+  if (current.length !== 5) { say('Enter a five-letter word.'); return; }
+  const answer = activeGame.word.toUpperCase();
+  const available = [...answer];
+  const result = Array(5).fill('absent');
+
+  [...current].forEach((letter, index) => {
+    if (letter === answer[index]) { result[index] = 'correct'; available[index] = null; }
   });
-}, true);
-makeBoard();makeKeyboard();
+  [...current].forEach((letter, index) => {
+    if (result[index] !== 'correct') {
+      const match = available.indexOf(letter);
+      if (match >= 0) { result[index] = 'present'; available[match] = null; }
+    }
+  });
+  result.forEach((state, index) => {
+    document.querySelector(`#cell-${row}-${index}`).classList.add(state);
+    const key = keyButtons[current[index]];
+    if (!key) return;
+    if (state === 'correct' || !key.classList.contains('correct')) {
+      key.classList.remove('present', 'absent');
+      key.classList.add(state);
+    }
+  });
+
+  if (current === answer) {
+    finished = true;
+    const earned = Math.max(120, 600 - row * 80);
+    stats.score += earned;
+    stats.streak += 1;
+    saveStats(); updateStats();
+    say(`Solved in ${row + 1}! You earned ${earned} points.`, 'win');
+    return;
+  }
+  row += 1;
+  current = '';
+  if (row === 6) {
+    finished = true;
+    stats.streak = 0;
+    saveStats(); updateStats();
+    say(`The word was ${answer}. Try another round.`, 'loss');
+  }
+}
+
+function say(text, kind = '') { message.textContent = text; message.className = `message ${kind}`; }
+
+function encodeGame(game) {
+  return btoa(unescape(encodeURIComponent(JSON.stringify({ title: game.title, word: game.word, note: game.note }))));
+}
+
+function decodeGame(value) {
+  return JSON.parse(decodeURIComponent(escape(atob(value))));
+}
+
+function inviteLink(game) {
+  return `${window.location.href.split('?')[0]}?game=${encodeURIComponent(encodeGame(game))}`;
+}
+
+function copyText(value, button) {
+  const done = () => {
+    button.textContent = 'Copied!';
+    setTimeout(() => { button.textContent = 'Copy invite link'; }, 1600);
+  };
+  if (!navigator.clipboard) { window.prompt('Copy this invite link:', value); return; }
+  navigator.clipboard.writeText(value).then(done).catch(() => window.prompt('Copy this invite link:', value));
+}
+
+function renderGames() {
+  const games = loadGames();
+  gamesList.innerHTML = '';
+  if (!games.length) {
+    gamesList.innerHTML = '<p class="empty-state">No custom games yet. Your first one is waiting.</p>';
+    return;
+  }
+  games.forEach(game => {
+    const item = document.createElement('article');
+    item.className = 'created-game';
+    const logo = document.createElement('span'); logo.className = 'mini-logo'; logo.textContent = 'W';
+    const details = document.createElement('div');
+    const heading = document.createElement('h3'); heading.textContent = game.title;
+    const description = document.createElement('p'); description.textContent = `${game.note || 'Custom Wordle'} · 5 letters`;
+    const play = document.createElement('button'); play.className = 'card-action'; play.textContent = 'Play'; play.onclick = () => startGame(game);
+    const copy = document.createElement('button'); copy.className = 'invite-button'; copy.textContent = 'Copy invite link'; copy.onclick = () => copyText(inviteLink(game), copy);
+    details.append(heading, description); item.append(logo, details, play, copy); gamesList.append(item);
+  });
+}
+
+function show(name) {
+  document.querySelectorAll('.view').forEach(view => view.classList.remove('active'));
+  document.querySelector(`#${name}-view`).classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(button => button.classList.toggle('active', button.dataset.view === name));
+  const titles = { home: 'Good evening, Anvita.', play: 'Tournament room.', builder: 'Game studio.', players: 'Meet the Guild.' };
+  document.querySelector('#page-title').textContent = titles[name];
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+document.querySelectorAll('[data-view]').forEach(button => button.addEventListener('click', () => show(button.dataset.view)));
+document.querySelector('#rules-button').onclick = () => { document.querySelector('#modal').hidden = false; };
+document.querySelector('#close-modal').onclick = () => { document.querySelector('#modal').hidden = true; };
+document.querySelector('#modal').onclick = event => { if (event.target.id === 'modal') event.currentTarget.hidden = true; };
+document.addEventListener('keydown', event => {
+  if (event.key === 'Enter') input('ENTER');
+  else if (event.key === 'Backspace') input('BACKSPACE');
+  else if (/^[a-zA-Z]$/.test(event.key)) input(event.key.toUpperCase());
+});
+
+titleInput.oninput = () => { document.querySelector('#preview-title').textContent = titleInput.value || 'Your new game'; };
+noteInput.oninput = () => { document.querySelector('#preview-note').textContent = noteInput.value || 'A Wordle round by Anvita K.'; };
+wordInput.oninput = () => {
+  wordInput.value = wordInput.value.replace(/[^a-z]/gi, '').toUpperCase();
+  document.querySelectorAll('.preview-tiles i').forEach((tile, index) => { tile.textContent = wordInput.value[index] || '·'; });
+};
+document.querySelector('#creator-form').onsubmit = event => {
+  event.preventDefault();
+  const title = titleInput.value.trim();
+  const word = wordInput.value.trim().toUpperCase();
+  if (!/^[A-Z]{5}$/.test(word)) { say('Your secret word must have exactly five letters.'); return; }
+  const game = { id: `${Date.now()}`, title, word, note: noteInput.value.trim(), createdAt: Date.now() };
+  const games = loadGames();
+  games.unshift(game); saveGames(games); renderGames();
+  event.target.reset();
+  document.querySelector('#preview-title').textContent = 'Your new game';
+  document.querySelector('#preview-note').textContent = 'A Wordle round by Anvita K.';
+  document.querySelectorAll('.preview-tiles i').forEach((tile, index) => { tile.textContent = 'ARTSY'[index]; });
+  startGame(game);
+};
+
+makeBoard();
+makeKeyboard();
+updateStats();
+renderGames();
 const invite = new URLSearchParams(window.location.search).get('game');
 if (invite) {
   try {
-    const data = JSON.parse(decodeURIComponent(escape(atob(invite))));
-    if (/^[A-Za-z]{5}$/.test(data.word) && data.title) startCustomGame(data.word, data.title);
-  } catch { /* Ignore malformed invite links. */ }
+    const game = decodeGame(invite);
+    if (/^[A-Za-z]{5}$/.test(game.word) && game.title) startGame({ ...game, word: game.word.toUpperCase() });
+  } catch { /* Invalid or incomplete invite links are ignored. */ }
 }
